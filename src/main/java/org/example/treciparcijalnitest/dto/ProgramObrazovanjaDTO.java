@@ -12,8 +12,7 @@ public class ProgramObrazovanjaDTO {
 
     @NotNull(message = "Vrijednost CSVET bodova ne smije biti null!")
     @Min(value = 1, message = "Vrijednost CSVET bodova mora biti veća od 0!")
-    @Positive(message = "Vrijednost CSVET bodova mora biti pozitivna!")
-    @Pattern(regexp = "^-?\\d+$", message = "Vrijednost CSVET bodova mora biti cijeli broj!")
+    @Max(value = 50, message = "Vrijednost CSVET bodova mora biti manja od 50!")
     private int CSVET;
 
     public ProgramObrazovanjaDTO() {

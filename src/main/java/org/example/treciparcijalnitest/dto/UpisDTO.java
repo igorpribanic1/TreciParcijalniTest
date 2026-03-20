@@ -12,14 +12,10 @@ import lombok.NoArgsConstructor;
 public class UpisDTO {
     @NotNull(message = "Id Programa Obrazovanja ne smije biti null!")
     @Min(value = 1, message = "Id Programa Obrazovanja mora biti veći od 0!")
-    @Positive(message = "Id Programa Obrazovanja mora biti pozitivan!")
-    @Pattern(regexp = "^-?\\d+$", message = "Id Programa Obrazovanja mora biti cijeli broj!")
     private int programId;
 
     @NotNull(message = "Id Polaznika ne smije biti null!")
     @Min(value = 1, message = "Id Polaznika mora biti veći od 0!")
-    @Positive(message = "Id Polaznika mora biti pozitivan!")
-    @Pattern(regexp = "^-?\\d+$", message = "Id Polaznika mora biti cijeli broj!")
     private int studentId;
 
     public UpisDTO() {

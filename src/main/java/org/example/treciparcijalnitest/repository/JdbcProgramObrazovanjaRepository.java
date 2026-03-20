@@ -1,7 +1,6 @@
 package org.example.treciparcijalnitest.repository;
 
 import lombok.AllArgsConstructor;
-import org.example.treciparcijalnitest.domain.Polaznik;
 import org.example.treciparcijalnitest.domain.ProgramObrazovanja;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,9 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Primary
@@ -29,16 +26,14 @@ public class JdbcProgramObrazovanjaRepository implements ProgramObrazovanjaRepos
 
     @Override
     public Optional<ProgramObrazovanja> getById(Integer id) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", id);
-        return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM ProgramObrazovanja WHERE ProgramObrazovanjaID = :id",
-                new JdbcProgramObrazovanjaRepository.ProgramObrazovanjaMapper(), parameters));
+        String sql = "SELECT * FROM ProgramObrazovanja WHERE ProgramObrazovanjaID = ?";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new JdbcProgramObrazovanjaRepository.ProgramObrazovanjaMapper(), id));
     }
 
 
     @Override
     public ProgramObrazovanja save(ProgramObrazovanja programObrazovanja) {
-        final String SQL = "INSERT INTO ProgramObrazovanja (Naziv, CSVET) OUTPUT INSERTED.ID VALUES (?, ?)";
+        final String SQL = "INSERT INTO ProgramObrazovanja (Naziv, CSVET) OUTPUT INSERTED.ProgramObrazovanjaID VALUES (?, ?)";
         Integer generatedId = jdbcTemplate.queryForObject(SQL, Integer.class, programObrazovanja.getName(), programObrazovanja.getCSVET());
         programObrazovanja.setId(generatedId);
         return programObrazovanja;

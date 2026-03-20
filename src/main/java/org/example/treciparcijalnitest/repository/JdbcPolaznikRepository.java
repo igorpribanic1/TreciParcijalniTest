@@ -10,9 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Primary
@@ -28,16 +26,14 @@ public class JdbcPolaznikRepository implements PolaznikRepository {
 
     @Override
     public Optional<Polaznik> getById(Integer id) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", id);
-        return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM Polaznik WHERE PolaznikID = :id",
-                new PolaznikMapper(), parameters));
+        String sql = "SELECT * FROM Polaznik WHERE PolaznikID = ?";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new PolaznikMapper(), id));
     }
 
 
     @Override
     public Polaznik save(Polaznik polaznik) {
-        final String SQL = "INSERT INTO Polaznik (Ime, Prezime) OUTPUT INSERTED.ID VALUES (?, ?)";
+        final String SQL = "INSERT INTO Polaznik (Ime, Prezime) OUTPUT INSERTED.PolaznikID VALUES (?, ?)";
         Integer generatedId = jdbcTemplate.queryForObject(SQL, Integer.class, polaznik.getFirstName(), polaznik.getLastName());
         polaznik.setId(generatedId);
         return polaznik;
