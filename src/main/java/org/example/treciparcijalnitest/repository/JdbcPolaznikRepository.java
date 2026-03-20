@@ -27,7 +27,11 @@ public class JdbcPolaznikRepository implements PolaznikRepository {
     @Override
     public Optional<Polaznik> getById(Integer id) {
         String sql = "SELECT * FROM Polaznik WHERE PolaznikID = ?";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new PolaznikMapper(), id));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new PolaznikMapper(), id));
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
 

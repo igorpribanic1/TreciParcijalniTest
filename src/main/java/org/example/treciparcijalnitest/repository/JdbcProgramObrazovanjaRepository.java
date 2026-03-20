@@ -27,7 +27,11 @@ public class JdbcProgramObrazovanjaRepository implements ProgramObrazovanjaRepos
     @Override
     public Optional<ProgramObrazovanja> getById(Integer id) {
         String sql = "SELECT * FROM ProgramObrazovanja WHERE ProgramObrazovanjaID = ?";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new JdbcProgramObrazovanjaRepository.ProgramObrazovanjaMapper(), id));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new JdbcProgramObrazovanjaRepository.ProgramObrazovanjaMapper(), id));
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
 

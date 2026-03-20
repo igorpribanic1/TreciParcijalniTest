@@ -27,7 +27,11 @@ public class JdbcUpisRepository implements UpisRepository{
     @Override
     public Optional<Upis> getById(Integer id) {
         String sql = "SELECT * FROM Upis WHERE UpisID = ?";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new JdbcUpisRepository.UpisMapper(), id));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new JdbcUpisRepository.UpisMapper(), id));
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
 

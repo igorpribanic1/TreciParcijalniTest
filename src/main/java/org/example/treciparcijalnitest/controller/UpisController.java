@@ -2,9 +2,7 @@ package org.example.treciparcijalnitest.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.example.treciparcijalnitest.dto.PolaznikDTO;
 import org.example.treciparcijalnitest.dto.UpisDTO;
-import org.example.treciparcijalnitest.service.PolaznikService;
 import org.example.treciparcijalnitest.service.UpisService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +23,11 @@ public class UpisController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UpisDTO>> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.getById(id));
+    public ResponseEntity<UpisDTO> getById(@PathVariable Integer id) {
+        Optional<UpisDTO> returnedObject = service.getById(id);
+        return returnedObject
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/new")

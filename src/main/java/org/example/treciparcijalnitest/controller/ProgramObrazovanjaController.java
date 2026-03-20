@@ -2,9 +2,7 @@ package org.example.treciparcijalnitest.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.example.treciparcijalnitest.dto.PolaznikDTO;
 import org.example.treciparcijalnitest.dto.ProgramObrazovanjaDTO;
-import org.example.treciparcijalnitest.service.PolaznikService;
 import org.example.treciparcijalnitest.service.ProgramObrazovanjaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +23,11 @@ public class ProgramObrazovanjaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<ProgramObrazovanjaDTO>> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.getById(id));
+    public ResponseEntity<ProgramObrazovanjaDTO> getById(@PathVariable Integer id) {
+        Optional<ProgramObrazovanjaDTO> returnedObject = service.getById(id);
+        return returnedObject
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/new")

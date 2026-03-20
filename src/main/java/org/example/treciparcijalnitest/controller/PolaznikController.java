@@ -23,8 +23,11 @@ public class PolaznikController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<PolaznikDTO>> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.getById(id));
+    public ResponseEntity<PolaznikDTO> getById(@PathVariable Integer id) {
+        Optional<PolaznikDTO> returnedObject = service.getById(id);
+        return returnedObject
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/new")
